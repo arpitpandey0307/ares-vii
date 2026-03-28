@@ -415,9 +415,14 @@ SceneManager.prototype.createEarth = function() {
   const earthRadius = 10;
   const earthGeometry = new THREE.SphereGeometry(earthRadius, 64, 64);
 
-  // Earth material (using color for now, textures can be added later)
+  // Load Earth textures
+  const textureLoader = new THREE.TextureLoader();
+  const earthTexture = textureLoader.load('assets/textures/2k_earth_daymap.jpg');
+  const earthClouds = textureLoader.load('assets/textures/2k_earth_clouds.jpg');
+
+  // Earth material with real texture
   const earthMaterial = new THREE.MeshStandardMaterial({
-    color: 0x1A6BAD,
+    map: earthTexture,
     roughness: 0.7,
     metalness: 0.2,
     emissive: 0x0a1f3d,
@@ -428,12 +433,12 @@ SceneManager.prototype.createEarth = function() {
   earth.position.set(0, 0, 0);
   earth.name = 'earth';
 
-  // Cloud layer
+  // Cloud layer with real texture
   const cloudGeometry = new THREE.SphereGeometry(earthRadius + 0.2, 64, 64);
   const cloudMaterial = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
+    map: earthClouds,
     transparent: true,
-    opacity: 0.3,
+    opacity: 0.4,
     roughness: 1,
     metalness: 0
   });
@@ -477,7 +482,7 @@ SceneManager.prototype.createEarth = function() {
   this.scene.add(earth);
   this.objects.earth = earth;
 
-  console.log('Created Earth sphere');
+  console.log('Created Earth sphere with real textures');
   return earth;
 };
 
@@ -684,9 +689,13 @@ SceneManager.prototype.createMars = function() {
   const marsRadius = 8;
   const marsGeometry = new THREE.SphereGeometry(marsRadius, 64, 64);
 
-  // Mars material with rust-red color
+  // Load Mars texture
+  const textureLoader = new THREE.TextureLoader();
+  const marsTexture = textureLoader.load('assets/textures/2k_mars.jpg');
+
+  // Mars material with real texture
   const marsMaterial = new THREE.MeshStandardMaterial({
-    color: 0xC1440E,
+    map: marsTexture,
     roughness: 0.9,
     metalness: 0.1,
     emissive: 0x3d1005,
@@ -735,7 +744,7 @@ SceneManager.prototype.createMars = function() {
   this.scene.add(mars);
   this.objects.mars = mars;
 
-  console.log('Created Mars sphere');
+  console.log('Created Mars sphere with real texture');
   return mars;
 };
 

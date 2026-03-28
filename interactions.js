@@ -219,9 +219,8 @@ class AudioController {
     this.audio.loop = true;
     this.audio.volume = 0.3;
 
-    // Note: Audio file should be placed in assets/audio/ambient_space.mp3
-    // For now, we'll just set up the controls
-    this.audio.src = 'assets/audio/ambient_space.mp3';
+    // Load the actual audio file
+    this.audio.src = 'assets/audio/space-sound.mp3';
 
     // Toggle button click
     this.toggleButton.addEventListener('click', () => this.toggle());
