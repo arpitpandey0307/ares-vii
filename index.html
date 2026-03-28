@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Frontend Odyssey - An immersive WebGL journey from Earth to Mars. Experience a cinematic space mission through scroll-driven 3D animations.">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Frontend Odyssey: Journey to Mars">
+  <meta property="og:description" content="An immersive WebGL storytelling experience - Journey from Earth to Mars">
+  <meta property="og:type" content="website">
+  
+  <title>Frontend Odyssey: Journey to Mars</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- WebGL Canvas (Fixed Background) -->
+  <canvas id="webgl-canvas"></canvas>
+  
+  <!-- Preloader -->
+  <div id="loader" class="loader">
+    <div class="loader-content">
+      <div id="lottie-rocket" class="lottie-animation"></div>
+      <div class="loader-countdown" id="countdown">10</div>
+      <div class="loader-text">INITIALIZING MISSION</div>
+      <div class="loader-progress">
+        <div class="loader-progress-bar" id="progress-bar"></div>
+      </div>
+      <div class="loader-status" id="loader-status">Loading assets...</div>
+    </div>
+  </div>
+  
+  <!-- Sound Toggle Button -->
+  <button id="sound-toggle" class="sound-toggle" aria-label="Toggle ambient space audio">
+    <span class="sound-icon">🔇</span>
+  </button>
+  
+  <!-- Main Content Sections -->
+  <main id="main-content">
+    
+    <!-- Section 1: Hero - Earth -->
+    <section id="section-hero" class="section" data-section="0">
+      <div class="section-content">
+        <h1 class="hero-title glitch" data-text="MISSION: ARES VII">MISSION: ARES VII</h1>
+        <p class="hero-subtitle typewriter">Humanity's next great leap — 140 million miles away.</p>
+        <button class="cta-button" id="launch-button" aria-label="Initiate launch sequence">
+          INITIATE LAUNCH
+        </button>
+        <div class="mission-clock" id="mission-clock">
+          <span class="clock-label">MISSION TIME</span>
+          <span class="clock-value">T+00:00:00</span>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section 2: Launch Sequence -->
+    <section id="section-launch" class="section" data-section="1">
+      <div class="section-content split-layout">
+        <div class="launch-left">
+          <h2 class="section-title">LAUNCH SEQUENCE</h2>
+        </div>
+        <div class="launch-right">
+          <div class="mission-stats">
+            <div class="stat-card" tabindex="0">
+              <div class="stat-label">DISTANCE</div>
+              <div class="stat-value" data-target="400" data-unit="km">
+                <span class="stat-number">0</span>
+                <span class="stat-unit">km</span>
+              </div>
+            </div>
+            <div class="stat-card" tabindex="0">
+              <div class="stat-label">SPEED</div>
+              <div class="stat-value" data-target="11.2" data-unit="km/s">
+                <span class="stat-number">0</span>
+                <span class="stat-unit">km/s</span>
+              </div>
+            </div>
+            <div class="stat-card" tabindex="0">
+              <div class="stat-label">FUEL</div>
+              <div class="stat-value" data-target="85" data-unit="%">
+                <span class="stat-number">100</span>
+                <span class="stat-unit">%</span>
+              </div>
+            </div>
+            <div class="stat-card" tabindex="0">
+              <div class="stat-label">CREW</div>
+              <div class="stat-value" data-target="6" data-unit="">
+                <span class="stat-number">6</span>
+                <span class="stat-unit"></span>
+              </div>
+            </div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-label">ESCAPE VELOCITY ACHIEVED</div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="escape-velocity-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section 3: Deep Space -->
+    <section id="section-deep-space" class="section" data-section="2">
+      <div class="section-content centered">
+        <h2 class="section-title">INTERSTELLAR TRAVEL</h2>
+        <div class="mission-logs">
+          <article class="mission-log-card" tabindex="0" role="button" aria-label="Mission log day 30">
+            <div class="card-front">
+              <div class="log-day">DAY 30</div>
+              <div class="log-title">Systems Check</div>
+            </div>
+            <div class="card-back">
+              <p class="log-content">All systems nominal. Crew morale high. Earth is now just a pale blue dot behind us. The journey continues.</p>
+            </div>
+          </article>
+          
+          <article class="mission-log-card" tabindex="0" role="button" aria-label="Mission log day 60">
+            <div class="card-front">
+              <div class="log-day">DAY 60</div>
+              <div class="log-title">Midpoint</div>
+            </div>
+            <div class="card-back">
+              <p class="log-content">Halfway to Mars. The void of space is both terrifying and beautiful. We are truly alone out here.</p>
+            </div>
+          </article>
+          
+          <article class="mission-log-card" tabindex="0" role="button" aria-label="Mission log day 90">
+            <div class="card-front">
+              <div class="log-day">DAY 90</div>
+              <div class="log-title">Final Approach</div>
+            </div>
+            <div class="card-back">
+              <p class="log-content">Mars visible ahead. The Red Planet grows larger each day. Excitement builds as we prepare for orbital insertion.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section 4: Mars Orbit -->
+    <section id="section-mars-orbit" class="section" data-section="3">
+      <div class="section-content">
+        <h2 class="section-title">APPROACHING MARS</h2>
+        <div class="orbital-hud">
+          <div class="progress-ring">
+            <svg class="progress-ring-svg" width="200" height="200">
+              <circle class="progress-ring-circle-bg" cx="100" cy="100" r="90"></circle>
+              <circle class="progress-ring-circle" cx="100" cy="100" r="90" id="orbital-progress"></circle>
+            </svg>
+            <div class="progress-ring-text">
+              <div class="countdown-label">ORBITAL INSERTION</div>
+              <div class="countdown-value" id="orbital-countdown">00:00</div>
+            </div>
+          </div>
+          <div class="mars-facts" id="mars-facts">
+            <div class="fact-item" data-fact="0">Surface temperature: -63°C average</div>
+            <div class="fact-item" data-fact="1">Gravity: 38% of Earth</div>
+            <div class="fact-item" data-fact="2">Day length: 24h 37m</div>
+            <div class="fact-item" data-fact="3">Distance from Sun: 228M km</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section 5: Landing -->
+    <section id="section-landing" class="section" data-section="4">
+      <div class="section-content">
+        <div class="mission-complete-card">
+          <h2 class="section-title">TOUCHDOWN — SOL 1</h2>
+          <div class="objectives-grid">
+            <div class="objective-item">
+              <span class="objective-check">✓</span>
+              <span class="objective-text">Deploy solar panels</span>
+            </div>
+            <div class="objective-item">
+              <span class="objective-check">✓</span>
+              <span class="objective-text">Establish communication</span>
+            </div>
+            <div class="objective-item">
+              <span class="objective-check">✓</span>
+              <span class="objective-text">Collect soil samples</span>
+            </div>
+            <div class="objective-item">
+              <span class="objective-check">✓</span>
+              <span class="objective-text">Set up habitat</span>
+            </div>
+            <div class="objective-item">
+              <span class="objective-check">✓</span>
+              <span class="objective-text">Begin exploration</span>
+            </div>
+          </div>
+          <button class="share-button" id="share-button" aria-label="Share the mission">
+            SHARE THE MISSION
+          </button>
+        </div>
+      </div>
+    </section>
+    
+  </main>
+  
+  <!-- Planet Modal -->
+  <div id="planet-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close modal">×</button>
+      <h3 id="modal-title" class="modal-title"></h3>
+      <div class="modal-body">
+        <p class="modal-lore"></p>
+        <div class="modal-facts"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Custom Cursor -->
+  <div id="custom-cursor" class="custom-cursor"></div>
+  
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/SplitText.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <script src="loader.js"></script>
+  <script src="main.js"></script>
+  <script src="scroll.js"></script>
+  <script src="interactions.js"></script>
+</body>
+</html>
