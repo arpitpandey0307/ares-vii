@@ -1087,17 +1087,14 @@ function initMicroInteractions() {
 }
 
 /**
- * Professional page load animation
+ * Professional page load animation - FIXED
  */
 function initPageLoadAnimation() {
-  // Fade in body
-  document.body.style.opacity = '0';
-  document.body.style.transition = 'opacity 0.5s ease-in';
+  // Remove the opacity fade that was causing black screen
+  document.body.style.opacity = '1';
   
   window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.body.style.opacity = '1';
-    }, 100);
+    console.log('Page loaded successfully');
   });
 }
 
