@@ -149,9 +149,47 @@ class PreloaderController {
     this.statusElement = document.getElementById('loader-status');
     this.countdownValue = 10;
     this.countdownInterval = null;
-    this.minDisplayTime = 3000; // Minimum 3 seconds display
+    this.minDisplayTime = 10000; // Exactly 10 seconds
     this.startTime = Date.now();
     this.lottieAnimation = null;
+    this.audioContext = null;
+    this.tickSound = null;
+  }
+
+  /**
+   * Create tick sound using Web Audio API
+   */
+  createTickSound() {
+    try {
+      this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (e) {
+      console.warn('Web Audio API not supported');
+      return;
+    }
+  }
+
+  /**
+   * Play tick sound
+   */
+  playTick(isLast = false) {
+    if (!this.audioContext) return;
+
+    const oscillator = this.audioContext.createOscillator();
+    const gainNode = this.audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+
+    // Different frequency for last tick
+    oscillator.frequency.value = isLast ? 1200 : 800;
+    oscillator.type = 'sine';
+
+    // Quick beep
+    gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1);
+
+    oscillator.start(this.audioContext.currentTime);
+    oscillator.stop(this.audioContext.currentTime + 0.1);
   }
 
   /**
@@ -222,17 +260,29 @@ class PreloaderController {
   }
 
   /**
-   * Start countdown animation
+   * Start countdown animation - EXACTLY 10 SECONDS
    */
   startCountdown() {
     this.initLottieAnimation();
+    this.createTickSound();
     this.updateStatus('Initializing systems...');
 
+    // Exactly 1 second per count
     this.countdownInterval = setInterval(() => {
       this.countdownValue--;
+      
       if (this.countdownElement) {
         this.countdownElement.textContent = this.countdownValue;
+        
+        // Add pulse animation on each tick
+        this.countdownElement.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+          this.countdownElement.style.transform = 'scale(1)';
+        }, 100);
       }
+
+      // Play tick sound
+      this.playTick(this.countdownValue === 0);
 
       // Update status messages
       if (this.countdownValue === 7) {
@@ -246,7 +296,7 @@ class PreloaderController {
       if (this.countdownValue <= 0) {
         clearInterval(this.countdownInterval);
       }
-    }, 300); // Count down every 300ms for dramatic effect
+    }, 1000); // Exactly 1000ms = 1 second per tick
   }
 
   /**

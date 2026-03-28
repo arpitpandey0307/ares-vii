@@ -1502,23 +1502,40 @@ body {
   }
 }
 
-/* Professional Loader Countdown */
+/* Professional Loader Countdown with smooth transitions */
 .loader-countdown {
   background: linear-gradient(135deg, var(--neon-accent), var(--earth-blue));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: countdownPulse 1s ease-in-out infinite;
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 5rem;
+  font-weight: 900;
+  position: relative;
 }
 
-@keyframes countdownPulse {
-  0%, 100% {
-    transform: scale(1);
-    filter: brightness(1);
+.loader-countdown::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  border: 3px solid var(--neon-accent);
+  border-radius: 50%;
+  opacity: 0;
+  animation: countdownRing 1s ease-out infinite;
+}
+
+@keyframes countdownRing {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 1;
   }
-  50% {
-    transform: scale(1.1);
-    filter: brightness(1.3);
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
   }
 }
 
