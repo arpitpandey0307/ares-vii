@@ -39,14 +39,14 @@ class ScrollController {
   }
 
   /**
-   * Create camera path animation synchronized with scroll
+   * Create camera path animation synchronized with scroll - ULTRA SMOOTH
    */
   createCameraPathAnimation() {
     const trigger = ScrollTrigger.create({
       trigger: 'body',
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 1,
+      scrub: 2, // Increased from 1 to 2 for smoother, more cinematic feel
       onUpdate: (self) => {
         const progress = self.progress;
         this.sceneManager.updateCameraFromScroll(progress);
@@ -64,11 +64,11 @@ class ScrollController {
     });
 
     this.triggers.push(trigger);
-    console.log('Camera path animation created');
+    console.log('Camera path animation created with ultra-smooth scrubbing');
   }
 
   /**
-   * Handle section transitions
+   * Handle section transitions with better visibility control
    */
   onSectionChange(newSection, oldSection) {
     console.log(`Section changed: ${oldSection} → ${newSection}`);
@@ -76,7 +76,7 @@ class ScrollController {
     // Trigger chromatic aberration flash effect
     this.triggerChromaticAberration();
 
-    // Section-specific logic
+    // Section-specific visibility and logic
     if (newSection === 1) {
       // Activate rocket exhaust in Section 2
       if (this.sceneManager.objects.rocket?.userData.exhaustEmitter) {
@@ -87,6 +87,11 @@ class ScrollController {
       if (this.sceneManager.objects.rocket?.userData.exhaustEmitter) {
         this.sceneManager.objects.rocket.userData.exhaustEmitter.setActive(false);
       }
+    }
+
+    // Show terrain only in Section 5
+    if (this.sceneManager.objects.terrain) {
+      this.sceneManager.objects.terrain.visible = (newSection === 4);
     }
 
     // Update exhaust emitter in render loop

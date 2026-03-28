@@ -1228,11 +1228,18 @@ body.mobile-fallback #webgl-canvas {
   50% { opacity: 1; }
 }
 
-/* Enhanced Smooth Scrolling */
+/* Enhanced Smooth Scrolling with momentum */
 html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: var(--neon-accent) var(--space-black);
+  scroll-padding-top: 0;
+}
+
+/* Smooth momentum scrolling for webkit browsers */
+body {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
 ::-webkit-scrollbar {
@@ -1313,31 +1320,34 @@ html {
   height: 300px;
 }
 
-/* Enhanced Text Glow Effects */
+/* Enhanced Text Glow Effects - MORE DRAMATIC */
 .hero-title,
 .section-title {
   text-shadow: 
-    0 0 10px currentColor,
     0 0 20px currentColor,
-    0 0 30px currentColor,
-    0 0 40px rgba(77, 255, 180, 0.5);
-  animation: textGlow 3s ease-in-out infinite;
+    0 0 40px currentColor,
+    0 0 60px currentColor,
+    0 0 80px rgba(77, 255, 180, 0.8),
+    0 0 100px rgba(77, 255, 180, 0.6);
+  animation: textGlow 2s ease-in-out infinite;
+  letter-spacing: 0.15em;
 }
 
 @keyframes textGlow {
   0%, 100% {
     text-shadow: 
-      0 0 10px currentColor,
       0 0 20px currentColor,
-      0 0 30px currentColor,
-      0 0 40px rgba(77, 255, 180, 0.5);
+      0 0 40px currentColor,
+      0 0 60px currentColor,
+      0 0 80px rgba(77, 255, 180, 0.8);
   }
   50% {
     text-shadow: 
-      0 0 20px currentColor,
       0 0 30px currentColor,
-      0 0 40px currentColor,
-      0 0 50px rgba(77, 255, 180, 0.8);
+      0 0 50px currentColor,
+      0 0 70px currentColor,
+      0 0 90px rgba(77, 255, 180, 1),
+      0 0 110px rgba(77, 255, 180, 0.8);
   }
 }
 

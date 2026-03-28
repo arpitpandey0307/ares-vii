@@ -86,40 +86,48 @@ class SceneManager {
   }
 
   /**
-   * Create lighting setup
+   * Create lighting setup with improved cinematic lighting
    */
   createLights() {
-    // Ambient light for base illumination
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    // Ambient light for base illumination (brighter)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     this.scene.add(ambientLight);
     this.lights.ambient = ambientLight;
 
-    // Directional light for sun
-    const sunLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    sunLight.position.set(100, 50, 100);
+    // Directional light for sun (stronger, better positioned)
+    const sunLight = new THREE.DirectionalLight(0xfff4e6, 2.0);
+    sunLight.position.set(50, 50, 50);
     this.scene.add(sunLight);
     this.lights.sun = sunLight;
 
+    // Additional fill light for better visibility
+    const fillLight = new THREE.DirectionalLight(0x8888ff, 0.5);
+    fillLight.position.set(-50, 0, -50);
+    this.scene.add(fillLight);
+    this.lights.fill = fillLight;
+
     // Point light for Mars (reddish glow)
-    const marsLight = new THREE.PointLight(0xff6644, 0.5, 200);
+    const marsLight = new THREE.PointLight(0xff6644, 0.8, 300);
     marsLight.position.set(0, 0, 0);
     this.scene.add(marsLight);
     this.lights.mars = marsLight;
+
+    console.log('Cinematic lighting created');
   }
 
   /**
-   * Create camera path curve
+   * Create camera path curve with better positioning
    */
   createCameraPath() {
     const points = [
-      new THREE.Vector3(0, 0, 50),      // Section 1: Earth view
-      new THREE.Vector3(20, 30, 40),    // Section 2: Launch
-      new THREE.Vector3(0, 0, 100),     // Section 3: Deep space
-      new THREE.Vector3(-30, 20, 80),   // Section 4: Mars orbit
-      new THREE.Vector3(0, 50, 30)      // Section 5: Landing
+      new THREE.Vector3(0, 5, 35),      // Section 1: Better Earth view (closer, slightly above)
+      new THREE.Vector3(15, 20, 35),    // Section 2: Launch view (side angle)
+      new THREE.Vector3(0, 10, 120),    // Section 3: Deep space (further back)
+      new THREE.Vector3(-25, 15, 70),   // Section 4: Mars orbit (better angle)
+      new THREE.Vector3(0, 40, 25)      // Section 5: Landing (top-down view)
     ];
 
-    this.cameraPath = new THREE.CatmullRomCurve3(points, false, 'catmullrom', 0.5);
+    this.cameraPath = new THREE.CatmullRomCurve3(points, false, 'catmullrom', 0.3);
   }
 
   /**
@@ -754,10 +762,10 @@ SceneManager.prototype.createMars = function() {
 // ===================================
 
 /**
- * Create Mars terrain with displacement for surface detail
+ * Create Mars terrain with better positioning
  */
 SceneManager.prototype.createMarsTerrain = function() {
-  const terrainGeometry = new THREE.PlaneGeometry(100, 100, 128, 128);
+  const terrainGeometry = new THREE.PlaneGeometry(80, 80, 128, 128);
 
   // Apply displacement to create terrain elevation
   const positions = terrainGeometry.attributes.position;
@@ -766,9 +774,9 @@ SceneManager.prototype.createMarsTerrain = function() {
     const y = positions.getY(i);
     
     // Create procedural height using noise-like function
-    const height = Math.sin(x * 0.1) * Math.cos(y * 0.1) * 3 +
-                   Math.sin(x * 0.3) * Math.cos(y * 0.2) * 1.5 +
-                   Math.random() * 0.5;
+    const height = Math.sin(x * 0.1) * Math.cos(y * 0.1) * 2 +
+                   Math.sin(x * 0.3) * Math.cos(y * 0.2) * 1 +
+                   Math.random() * 0.3;
     
     positions.setZ(i, height);
   }
@@ -785,13 +793,14 @@ SceneManager.prototype.createMarsTerrain = function() {
 
   const terrain = new THREE.Mesh(terrainGeometry, terrainMaterial);
   terrain.rotation.x = -Math.PI / 2;
-  terrain.position.set(0, -10, 0);
+  terrain.position.set(0, -20, 0); // Moved down so it doesn't block view
   terrain.name = 'terrain';
+  terrain.visible = false; // Start hidden, show only in Section 5
 
   this.scene.add(terrain);
   this.objects.terrain = terrain;
 
-  console.log('Created Mars terrain mesh');
+  console.log('Created Mars terrain mesh with better positioning');
   return terrain;
 };
 
