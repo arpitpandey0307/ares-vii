@@ -1,148 +1,184 @@
-# Frontend Odyssey: Journey to Mars
+# 🚀 ARES VII - Journey to Mars
 
-An immersive, cinematic WebGL storytelling experience that takes users on a visual journey from Earth to Mars through scroll-driven 3D animations.
+An immersive WebGL storytelling experience that takes you on a cinematic journey from Earth to Mars. Built for the Frontend Odyssey hackathon.
 
-## 🚀 Features
+## 🌐 Live Demo
 
-- **5-Section Narrative Journey**: Hero, Launch, Deep Space, Mars Orbit, Landing
-- **Three.js 3D Rendering**: 15,000 star particles, Earth & Mars spheres, rocket, asteroids, terrain
-- **GSAP Scroll Animations**: Camera path scrubbing, parallax effects, section pinning
-- **Interactive Elements**: Custom cursor, planet modals, audio toggle, card hover effects
-- **Fully Responsive**: Desktop, tablet, and mobile with graceful degradation
-- **Accessibility**: Reduced motion support, keyboard navigation, ARIA labels
-- **Performance Optimized**: Lazy loading, resource disposal, FPS monitoring
+**[View Live Demo →](https://ares-vii.vercel.app/)**
+
+## ✨ Features
+
+- **Immersive 3D Experience**: Real-time WebGL rendering with Three.js
+- **Scroll-Driven Narrative**: 5 interactive sections telling the story of humanity's journey to Mars
+- **Cinematic Animations**: Smooth GSAP-powered animations synchronized with scroll
+- **Realistic Visuals**: High-quality 2K textures for Earth and Mars
+- **Interactive Elements**: Custom cursor, planet modals, mission logs, and more
+- **Audio Experience**: Synchronized countdown audio during loading
+- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
+- **Accessibility**: Full keyboard navigation and screen reader support
+
+## 🎬 Journey Sections
+
+1. **Hero - Earth**: Mission briefing and launch preparation
+2. **Launch Sequence**: Escape velocity and departure from Earth
+3. **Deep Space**: Interstellar travel and mission logs
+4. **Mars Orbit**: Approaching the Red Planet
+5. **Landing**: Touchdown on Mars and mission completion
+
+## 🛠️ Technologies Used
+
+- **Three.js** - 3D rendering and WebGL
+- **GSAP** - Professional animations and ScrollTrigger
+- **Vanilla JavaScript** - No framework dependencies
+- **CSS3** - Modern styling with custom properties
+- **HTML5** - Semantic markup
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- A modern web browser (Chrome, Firefox, Edge, Safari)
+- A local web server (Python, Node.js, or VS Code Live Server)
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/arpitpandey0307/ares-vii.git
+cd ares-vii
+```
+
+2. Start a local server:
+
+**Using Python:**
+```bash
+python -m http.server 8000
+```
+
+**Using Node.js:**
+```bash
+npx http-server -p 8000
+```
+
+**Using VS Code:**
+- Right-click `index.html`
+- Select "Open with Live Server"
+
+3. Open your browser and navigate to:
+```
+http://localhost:8000
+```
 
 ## 📁 Project Structure
 
 ```
-/
-├── index.html          # Main HTML structure
-├── style.css           # Design system and styles
-├── loader.js           # Asset preloader
-├── main.js             # Three.js scene management
-├── scroll.js           # GSAP scroll animations
-├── interactions.js     # User interactions
-└── assets/
-    ├── textures/       # Planet textures (add your own)
-    ├── audio/          # Ambient space audio (add your own)
-    └── fonts/          # Custom fonts (optional)
+ares-vii/
+├── index.html              # Main HTML file
+├── style.css               # Styles and animations
+├── main.js                 # Three.js scene setup
+├── loader.js               # Preloader and countdown
+├── scroll.js               # Scroll animations
+├── interactions.js         # User interactions
+├── assets/
+│   ├── textures/          # Earth and Mars textures
+│   │   ├── 2k_earth_daymap.jpg
+│   │   ├── 2k_earth_clouds.jpg
+│   │   ├── 2k_mars.jpg
+│   │   └── 2k_earth_normal_map.tif
+│   └── audio/             # Sound effects
+│       ├── countdown.mp3
+│       └── space-sound.mp3
+└── README.md
 ```
 
-## 🎨 Tech Stack
+## 🎨 Key Features Breakdown
 
-- **HTML5** - Semantic structure
-- **CSS3** - Custom properties, animations, responsive design
-- **Vanilla JavaScript** - No frameworks, pure ES6+
-- **Three.js** - WebGL 3D rendering
-- **GSAP** - Animation library with ScrollTrigger
+### 3D Scene
+- Realistic Earth with cloud layer and normal mapping
+- Detailed Mars with authentic surface textures
+- Dynamic starfield with 2000+ particles
+- Animated rocket with exhaust particles
+- Asteroid belt and space debris
 
-## 🛠️ Setup
+### Animations
+- Smooth camera path through 5 sections
+- Scroll-driven 3D transformations
+- Parallax effects on UI elements
+- Particle systems for exhaust and stars
+- Dramatic countdown with glow effects
 
-1. **Clone or download** this project
+### UI/UX
+- Custom animated cursor
+- Interactive stat cards with 3D rotation
+- Flip cards for mission logs
+- Progress indicators and HUD elements
+- Mission clock with live timer
+- Audio toggle controls
 
-2. **Add assets** (optional but recommended):
-   - Place planet textures in `assets/textures/`
-   - Place ambient audio in `assets/audio/ambient_space.mp3`
-   - Free resources:
-     - Textures: https://www.solarsystemscope.com/textures/
-     - Audio: https://freesound.org/
+## 🎯 Performance
 
-3. **Serve the project**:
-   ```bash
-   # Using Python
-   python -m http.server 8000
-   
-   # Using Node.js
-   npx serve
-   
-   # Or use any local server
-   ```
+- Optimized for 60fps on modern hardware
+- Efficient particle systems
+- Lazy loading for section assets
+- Hardware-accelerated CSS animations
+- Mobile fallback with gradient background
 
-4. **Open in browser**:
-   ```
-   http://localhost:8000
-   ```
+## 🌟 Browser Support
 
-## 🎮 Controls
+- ✅ Chrome 90+
+- ✅ Firefox 88+
+- ✅ Edge 90+
+- ✅ Safari 14+
+- ❌ Internet Explorer (not supported)
 
-- **Scroll** - Navigate through the journey
-- **Click planets** - View planetary data
-- **Hover cards** - See 3D tilt effects
-- **Click mission logs** - Flip cards to read entries
-- **Sound toggle** - Enable/disable ambient audio
-- **Share button** - Share your journey
+## 📱 Mobile Support
 
-## 📱 Responsive Breakpoints
+The experience is fully responsive with:
+- Touch-friendly controls
+- Optimized performance for mobile GPUs
+- Fallback gradient background for low-end devices
+- Adapted UI for smaller screens
 
-- **Desktop** (>1024px): Full 3D experience
-- **Tablet** (768-1024px): Reduced particles, maintained 3D
-- **Mobile** (<768px): CSS gradient fallback, preserved interactions
+## 🎵 Audio
 
-## ♿ Accessibility
+The experience includes:
+- Countdown audio during loading (10 seconds)
+- Ambient space sound (toggleable)
+- Audio attempts autoplay but respects browser policies
+- Falls back to user interaction if autoplay is blocked
 
-- **Reduced Motion**: Respects `prefers-reduced-motion` preference
-- **Keyboard Navigation**: All interactive elements are keyboard accessible
-- **Screen Readers**: Semantic HTML and ARIA labels
-- **Focus Management**: Visible focus states and modal focus trapping
+## 🤝 Contributing
 
-## 🎯 Browser Support
-
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
-- Mobile Safari 14+
-
-## 📝 Customization
-
-### Colors
-Edit CSS custom properties in `style.css`:
-```css
-:root {
-  --space-black: #03040A;
-  --neon-accent: #4DFFB4;
-  /* ... */
-}
-```
-
-### Camera Path
-Edit camera positions in `main.js`:
-```javascript
-const points = [
-  new THREE.Vector3(0, 0, 50),    // Section 1
-  new THREE.Vector3(20, 30, 40),  // Section 2
-  // ...
-];
-```
-
-### Content
-Edit section content directly in `index.html`
-
-## 🐛 Troubleshooting
-
-**3D scene not rendering:**
-- Check browser console for errors
-- Ensure Three.js CDN is loading
-- Try a different browser
-
-**Scroll animations not working:**
-- Ensure GSAP and ScrollTrigger CDNs are loading
-- Check that JavaScript is enabled
-
-**Performance issues:**
-- The app automatically degrades quality on low FPS
-- Try disabling browser extensions
-- Use a more powerful device
+Contributions are welcome! Feel free to:
+- Report bugs
+- Suggest new features
+- Submit pull requests
 
 ## 📄 License
 
-This project is open source and available for educational purposes.
+This project is open source and available under the MIT License.
 
-## 🙏 Credits
+## 👨‍💻 Author
 
-- Three.js - https://threejs.org/
-- GSAP - https://greensock.com/gsap/
-- Google Fonts - Orbitron & Inter
+**Arpit Pandey**
+- GitHub: [@arpitpandey0307](https://github.com/arpitpandey0307)
+
+## 🙏 Acknowledgments
+
+- Textures from NASA and public domain sources
+- Three.js community for excellent documentation
+- GSAP for powerful animation tools
+- Frontend Odyssey hackathon for the inspiration
+
+## 🚀 Deployment
+
+This project is deployed on Vercel:
+- **Live URL**: [https://ares-vii.vercel.app/](https://ares-vii.vercel.app/)
+- **Automatic deployments** from main branch
+- **Optimized** for production with CDN
 
 ---
 
 **Built with ❤️ for the Frontend Odyssey Hackathon**
+
+*Experience the journey. Explore the cosmos. Reach for Mars.* 🌌
