@@ -596,7 +596,8 @@ SceneManager.prototype.createRocket = function() {
     rocketGroup.add(fin);
   }
 
-  rocketGroup.position.set(0, -10, 0);
+  rocketGroup.position.set(-15, -5, 5); // Position rocket to the lower left, away from Earth
+  rocketGroup.rotation.z = Math.PI / 6; // Tilt rocket slightly for dynamic look
   rocketGroup.name = 'rocket';
 
   // Create exhaust emitter

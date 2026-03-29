@@ -16,12 +16,9 @@ class AssetManager {
     this.loadedSections = new Set();
   }
 
-  /**
-   * Add texture to loading queue
-   */
   loadTexture(path) {
     this.total++;
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const img = new Image();
       img.onload = () => {
         this.loaded++;
@@ -32,18 +29,15 @@ class AssetManager {
         console.warn(`Failed to load texture: ${path}`);
         this.loaded++;
         this.updateProgress();
-        resolve(null); // Continue even if texture fails
+        resolve(null);
       };
       img.src = path;
     });
   }
 
-  /**
-   * Load audio file
-   */
   loadAudio(path) {
     this.total++;
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const audio = new Audio();
       audio.addEventListener('canplaythrough', () => {
         this.loaded++;
@@ -54,16 +48,13 @@ class AssetManager {
         console.warn(`Failed to load audio: ${path}`);
         this.loaded++;
         this.updateProgress();
-        resolve(null); // Continue even if audio fails
+        resolve(null);
       }, { once: true });
       audio.src = path;
       audio.load();
     });
   }
 
-  /**
-   * Check if font is loaded
-   */
   loadFont(name) {
     this.total++;
     return document.fonts.ready.then(() => {
@@ -78,16 +69,10 @@ class AssetManager {
     });
   }
 
-  /**
-   * Get loading progress (0-1)
-   */
   getProgress() {
     return this.total === 0 ? 0 : this.loaded / this.total;
   }
 
-  /**
-   * Update progress bar and countdown
-   */
   updateProgress() {
     const progress = this.getProgress();
     const progressBar = document.getElementById('progress-bar');
@@ -95,45 +80,28 @@ class AssetManager {
       progressBar.style.width = `${progress * 100}%`;
     }
 
-    // Check if loading is complete
     if (this.loaded >= this.total && this.onCompleteCallback) {
       this.onCompleteCallback();
     }
   }
 
-  /**
-   * Set callback for when loading completes
-   */
   onComplete(callback) {
     this.onCompleteCallback = callback;
-    // If already loaded, call immediately
     if (this.loaded >= this.total) {
       callback();
     }
   }
 
-  /**
-   * Preload section assets (lazy loading)
-   */
   preloadSection(sectionIndex) {
     if (this.loadedSections.has(sectionIndex)) {
       return Promise.resolve();
     }
-
-    // Mark as loaded
     this.loadedSections.add(sectionIndex);
-
-    // In a real implementation, you would load section-specific textures here
-    // For now, we'll just return a resolved promise
     return Promise.resolve();
   }
 
-  /**
-   * Unload section assets
-   */
   unloadSection(sectionIndex) {
     this.loadedSections.delete(sectionIndex);
-    // In a real implementation, you would dispose of textures here
   }
 }
 
@@ -149,161 +117,139 @@ class PreloaderController {
     this.statusElement = document.getElementById('loader-status');
     this.countdownValue = 10;
     this.countdownInterval = null;
-    this.minDisplayTime = 10000; // Exactly 10 seconds
+    this.minDisplayTime = 10000;
     this.startTime = Date.now();
-    this.lottieAnimation = null;
-    this.audioContext = null;
-    this.tickSound = null;
+    this.countdownAudio = null;
   }
 
-  /**
-   * Create tick sound using Web Audio API
-   */
-  createTickSound() {
-    try {
-      this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    } catch (e) {
-      console.warn('Web Audio API not supported');
-      return;
-    }
-  }
-
-  /**
-   * Play tick sound
-   */
-  playTick(isLast = false) {
-    if (!this.audioContext) return;
-
-    const oscillator = this.audioContext.createOscillator();
-    const gainNode = this.audioContext.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(this.audioContext.destination);
-
-    // Different frequency for last tick
-    oscillator.frequency.value = isLast ? 1200 : 800;
-    oscillator.type = 'sine';
-
-    // Quick beep
-    gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1);
-
-    oscillator.start(this.audioContext.currentTime);
-    oscillator.stop(this.audioContext.currentTime + 0.1);
-  }
-
-  /**
-   * Initialize Lottie animation
-   */
   initLottieAnimation() {
     const container = document.getElementById('lottie-rocket');
-    if (!container || typeof lottie === 'undefined') {
-      // Fallback to emoji if Lottie not available
-      container.innerHTML = '<div style="font-size: 4rem; animation: rocket-launch 2s ease-in-out infinite;">🚀</div>';
-      return;
-    }
-
-    // Create a simple rocket animation programmatically
-    // In production, you would load a JSON animation file
-    this.createFallbackRocketAnimation(container);
-  }
-
-  /**
-   * Create fallback rocket animation
-   */
-  createFallbackRocketAnimation(container) {
+    if (!container) return;
+    
     container.innerHTML = `
       <div class="rocket-container" style="width: 200px; height: 200px; position: relative; margin: 0 auto;">
         <div class="rocket" style="
-          font-size: 4rem;
+          font-size: 5rem;
           position: absolute;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
           animation: rocketFloat 2s ease-in-out infinite;
+          filter: drop-shadow(0 0 30px #FF6B35);
         ">🚀</div>
         <div class="rocket-trail" style="
           position: absolute;
           bottom: 20%;
           left: 50%;
           transform: translateX(-50%);
-          width: 4px;
-          height: 40px;
-          background: linear-gradient(to bottom, var(--hud-orange), transparent);
+          width: 6px;
+          height: 60px;
+          background: linear-gradient(to bottom, #FF6B35, transparent);
           animation: trailPulse 0.5s ease-in-out infinite;
+          box-shadow: 0 0 20px #FF6B35;
         "></div>
       </div>
     `;
 
-    // Add animations
     const style = document.createElement('style');
     style.textContent = `
       @keyframes rocketFloat {
-        0%, 100% { transform: translate(-50%, -50%) translateY(0); }
-        50% { transform: translate(-50%, -50%) translateY(-20px); }
+        0%, 100% { transform: translate(-50%, -50%) translateY(0) rotate(-45deg); }
+        50% { transform: translate(-50%, -50%) translateY(-30px) rotate(-45deg); }
       }
       @keyframes trailPulse {
-        0%, 100% { opacity: 0.5; height: 40px; }
-        50% { opacity: 1; height: 60px; }
+        0%, 100% { opacity: 0.5; height: 60px; }
+        50% { opacity: 1; height: 80px; }
       }
     `;
     document.head.appendChild(style);
   }
 
-  /**
-   * Update status text
-   */
   updateStatus(text) {
     if (this.statusElement) {
       this.statusElement.textContent = text;
+      this.statusElement.style.animation = 'none';
+      setTimeout(() => {
+        this.statusElement.style.animation = 'pulse 2s ease-in-out infinite';
+      }, 10);
     }
   }
 
-  /**
-   * Start countdown animation - EXACTLY 10 SECONDS
-   */
   startCountdown() {
     this.initLottieAnimation();
-    this.createTickSound();
-    this.updateStatus('Initializing systems...');
+    this.updateStatus('🚀 Initializing Mission Systems...');
+    
+    // Setup and autoplay audio
+    this.countdownAudio = new Audio('assets/audio/countdown.mp3');
+    this.countdownAudio.volume = 1.0;
+    this.countdownAudio.loop = false;
+    
+    // Attempt autoplay with user interaction fallback
+    const playAudio = () => {
+      this.countdownAudio.play()
+        .then(() => console.log('✅ Countdown audio playing'))
+        .catch(err => {
+          console.warn('⚠️ Autoplay blocked, trying on interaction:', err);
+          // Retry on any user interaction
+          const enableAudio = () => {
+            this.countdownAudio.play()
+              .then(() => {
+                console.log('✅ Audio enabled after interaction');
+                document.removeEventListener('click', enableAudio);
+                document.removeEventListener('keydown', enableAudio);
+                document.removeEventListener('touchstart', enableAudio);
+              })
+              .catch(e => console.error('❌ Audio failed:', e));
+          };
+          document.addEventListener('click', enableAudio, { once: true });
+          document.addEventListener('keydown', enableAudio, { once: true });
+          document.addEventListener('touchstart', enableAudio, { once: true });
+        });
+    };
+    
+    // Try to play immediately
+    playAudio();
 
-    // Exactly 1 second per count
+    // Countdown timer
     this.countdownInterval = setInterval(() => {
       this.countdownValue--;
       
       if (this.countdownElement) {
         this.countdownElement.textContent = this.countdownValue;
         
-        // Add pulse animation on each tick
-        this.countdownElement.style.transform = 'scale(1.2)';
+        // Dramatic pulse effect
+        this.countdownElement.style.transform = 'scale(1.4)';
+        this.countdownElement.style.textShadow = '0 0 50px #4DFFB4, 0 0 100px #4DFFB4, 0 0 150px #4DFFB4';
         setTimeout(() => {
           this.countdownElement.style.transform = 'scale(1)';
-        }, 100);
+          this.countdownElement.style.textShadow = '0 0 30px #4DFFB4, 0 0 60px #4DFFB4';
+        }, 200);
       }
 
-      // Play tick sound
-      this.playTick(this.countdownValue === 0);
-
       // Update status messages
-      if (this.countdownValue === 7) {
-        this.updateStatus('Loading 3D assets...');
-      } else if (this.countdownValue === 4) {
-        this.updateStatus('Preparing launch sequence...');
+      if (this.countdownValue === 9) {
+        this.updateStatus('⚡ Initializing WebGL Renderer...');
+      } else if (this.countdownValue === 7) {
+        this.updateStatus('🌍 Loading 3D Assets...');
+      } else if (this.countdownValue === 5) {
+        this.updateStatus('✨ Compiling Shaders...');
+      } else if (this.countdownValue === 3) {
+        this.updateStatus('🔥 Preparing Launch Sequence...');
       } else if (this.countdownValue === 1) {
-        this.updateStatus('Ready for launch!');
+        this.updateStatus('🎯 Ready for Launch!');
       }
 
       if (this.countdownValue <= 0) {
         clearInterval(this.countdownInterval);
+        if (this.countdownAudio) {
+          this.countdownAudio.pause();
+          this.countdownAudio.currentTime = 0;
+        }
       }
-    }, 1000); // Exactly 1000ms = 1 second per tick
+    }, 1000);
   }
 
-  /**
-   * Dissolve loader with fade animation
-   */
   dissolve() {
-    // Ensure minimum display time
     const elapsed = Date.now() - this.startTime;
     const remainingTime = Math.max(0, this.minDisplayTime - elapsed);
 
@@ -315,7 +261,6 @@ class PreloaderController {
       if (this.loaderElement) {
         this.loaderElement.classList.add('hidden');
         
-        // Remove from DOM after animation completes
         setTimeout(() => {
           if (this.loaderElement && this.loaderElement.parentNode) {
             this.loaderElement.parentNode.removeChild(this.loaderElement);
@@ -330,11 +275,9 @@ class PreloaderController {
 // INITIALIZATION
 // ===================================
 
-// Global instances
 let assetManager;
 let preloaderController;
 
-// Initialize on DOM ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initLoader);
 } else {
@@ -342,28 +285,18 @@ if (document.readyState === 'loading') {
 }
 
 function initLoader() {
-  // Create instances
   assetManager = new AssetManager();
   preloaderController = new PreloaderController();
 
-  // Start countdown animation
   preloaderController.startCountdown();
 
-  // Load fonts (Google Fonts are already loading via link tags)
   assetManager.loadFont('Orbitron');
   assetManager.loadFont('Inter');
-
-  // Note: Textures and audio will be loaded by main.js when needed
-  // For now, we'll just simulate some loading time
   
-  // Set up completion callback
   assetManager.onComplete(() => {
-    console.log('Assets loaded, initializing application...');
-    
-    // Dissolve loader
+    console.log('✅ Assets loaded, initializing application...');
     preloaderController.dissolve();
 
-    // Initialize main application after loader dissolves
     setTimeout(() => {
       if (typeof initializeApp === 'function') {
         initializeApp();
@@ -371,7 +304,6 @@ function initLoader() {
     }, 1000);
   });
 
-  // If no assets to load, complete immediately after minimum time
   if (assetManager.total === 0) {
     setTimeout(() => {
       assetManager.updateProgress();
@@ -379,7 +311,6 @@ function initLoader() {
   }
 }
 
-// Export for use in other modules
 if (typeof window !== 'undefined') {
   window.assetManager = assetManager;
   window.preloaderController = preloaderController;
